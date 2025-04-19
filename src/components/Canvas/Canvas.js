@@ -430,6 +430,66 @@ const Canvas = () => {
       window.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
+
+  useEffect(() => {
+    const handleResizeStencil = (e) => {
+      if (!stencilRef.current || !fabricCanvasRef.current || !imageRef.current) return;
+  
+      const stencil = stencilRef.current;
+      const image = imageRef.current;
+      const delta = 20;
+  
+      if (e.detail.type === 'increase') {
+        // 1. Resize stencil
+        stencil.set({
+          width: stencil.width + delta,
+          height: stencil.height + delta,
+          left: stencil.left - delta / 2,
+          top: stencil.top - delta / 2
+        });
+  
+        // 2. Zoom image in (scale up)
+        const newZoom = Math.min(image.scaleX * 1.05, 3.0); // same as in Controls
+        image.scaleX = newZoom;
+        image.scaleY = newZoom;
+  
+        // 3. Update Redux zoom (optional)
+        dispatch(setZoom(newZoom));
+      } else if (e.detail.type === 'decrease') {
+        stencil.set({
+          width: Math.max(50, stencil.width - delta),
+          height: Math.max(50, stencil.height - delta),
+          left: stencil.left + delta / 2,
+          top: stencil.top + delta / 2
+        });
+  
+        const newZoom = Math.max(image.scaleX * 0.95, 0.4);
+        image.scaleX = newZoom;
+        image.scaleY = newZoom;
+  
+        dispatch(setZoom(newZoom));
+      }
+  
+      stencil.setCoords();
+  
+      // Update clipPath size & position
+      if (image.clipPath) {
+        image.clipPath.width = stencil.width;
+        image.clipPath.height = stencil.height;
+        image.clipPath.left = stencil.left;
+        image.clipPath.top = stencil.top;
+      }
+  
+      fabricCanvasRef.current.renderAll();
+    };
+  
+    window.addEventListener('resizeStencil', handleResizeStencil);
+  
+    return () => {
+      window.removeEventListener('resizeStencil', handleResizeStencil);
+    };
+  }, []);
+  
   
   return (
     <div className="canvas-container">

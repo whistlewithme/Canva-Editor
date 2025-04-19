@@ -1,0 +1,82 @@
+.side-panel {
+  width: 250px;
+  height: 100%;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+  padding: 15px;
+  overflow-y: auto;
+}
+
+.panel-section {
+  margin-bottom: 20px;
+}
+
+.panel-section h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.file-input {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.image-gallery, .stencil-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gallery-item, .stencil-item {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+}
+
+.gallery-item img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.stencil-item {
+  flex-direction: column;
+  padding: 5px;
+}
+
+.stencil-preview {
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 2px solid #333;
+}
+
+.stencil-preview.rect {
+  border-radius: 4px;
+}
+
+.stencil-preview.circle {
+  border-radius: 50%;
+}
+
+.stencil-item span {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.empty-gallery {
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-style: italic;
+  background-color: #f9f9f9;
+  border: 1px dashed #ddd;
+  border-radius: 4px;
+} 
