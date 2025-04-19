@@ -1,87 +1,81 @@
 .controls {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  background: #f8f8f8;
+  background: white;
   border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 15px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+}
+
+.controls h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
 }
 
 .zoom-controls {
   display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.control-button {
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-button:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.control-button:active {
+  background-color: #e5e7eb;
+}
+
+.control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .reset-controls {
   display: flex;
-  justify-content: space-between;
-  background: white;
-  border-radius: 8px;
-  padding: 10px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-}
-
-.control-button {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: none;
-  background: white;
-  color: #333;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.control-button:hover {
-  background: #f5f5f5;
-}
-
-.control-button:active {
-  background: #eeeeee;
-}
-
-.control-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+  gap: 8px;
 }
 
 .reset-button {
-  background: transparent;
-  border: none;
-  padding: 6px 10px;
-  font-size: 13px;
-  color: #333;
-  cursor: pointer;
+  background-color: #f9fafb;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  padding: 8px 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.reset-button svg {
-  width: 18px;
-  height: 18px;
-  color: #555;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
 }
 
 .reset-button:hover {
-  background: #f5f5f5;
-  border-radius: 4px;
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
 }
 
 .reset-button:active {
-  background: #eeeeee;
+  background-color: #e5e7eb;
 }
 
 .reset-button:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 

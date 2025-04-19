@@ -86,18 +86,7 @@ const StencilEditor = () => {
     <div className="stencil-editor">
       <div className="editor-header">
         <div className="app-logo">
-          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#4ca1af', stopOpacity: 1 }} />
-                <stop offset="100%" style={{ stopColor: '#2c3e50', stopOpacity: 1 }} />
-              </linearGradient>
-            </defs>
-            <rect x="3" y="4" width="18" height="16" rx="3" ry="3" stroke="url(#grad)" stroke-width="2" fill="none" />
-            <circle cx="8" cy="8" r="2" fill="url(#grad)" />
-            <path d="M3 17L9 11C9.5 10.5 10.5 10.5 11 11L15 15L17 13C17.5 12.5 18.5 12.5 19 13L21 15" stroke="url(#grad)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-          <span>Stencil Editor</span>
+          <img src="./assets/appypie-logo.svg" alt="Appy Pie" />
         </div>
         
         <div className="canvas-size-controls">
