@@ -28,7 +28,7 @@ const Controls = () => {
   const { zoom, history, future } = useSelector(state => state.editor);
 
   // Define zoom increment/decrement amount
-  const minZoom = 0.4; // Allow zooming out to 40%
+  const minZoom = -0.4; // Allow zooming out to 40%
   const maxZoom = 3.0;
 
   const handleZoomIn = () => {

@@ -1,31 +1,60 @@
 import { Canvas as FabricCanvas, Rect, Image as FabricImage } from 'fabric';
 
-// Create a stencil shape (rounded rectangle) - now movable
+
 export const createStencil = (canvas, width, height) => {
   const rect = new Rect({
-    width: width,
-    height: height,
-    left: 200, // Initial position
+    width,
+    height,
+    left: 200,
     top: 200,
     rx: 20,
     ry: 20,
-    fill: 'rgba(255,255,255,0.2)', // Slightly more visible
+    fill: 'rgba(255,255,255,0.2)',
     stroke: '#333',
     strokeWidth: 2,
-    selectable: false, // Start with stencil not selectable (image mode)
+
+    // These are the defaults you set
+    selectable: false,
     evented: true,
-    hasControls: false,
+
+    // ✅ Enable resizing when Shift is pressed (via Canvas.js)
+    hasControls: true,
     hasBorders: true,
-    hoverCursor: 'move',
-    // Add these properties to make stencil less likely to interfere with image
+
+    // 📌 Custom styling
+    cornerSize: 12,
+    cornerColor: 'blue',
+    cornerStyle: 'circle',
+    transparentCorners: false,
+
+    // 📌 No rotation / flipping
+    lockRotation: true,
+    lockScalingFlip: true,
+
+    // 🖱️ Don't interfere with pixel hit testing
     perPixelTargetFind: false,
-    cornerSize: 10,
-    transparentCorners: false
+
+    // Optional if you want to start with fixed size
+    lockScalingX: true,
+    lockScalingY: true
   });
-  
+
+  // 👇 Optional: Only allow corner resizing (disable sides)
+  rect.setControlsVisibility({
+    mt: false, mb: false,
+    ml: false, mr: false,
+    tl: true, tr: true,
+    bl: true, br: true
+  });
+
+  // Save original dimensions
+  rect.originalWidth = width;
+  rect.originalHeight = height;
+
   canvas.add(rect);
   return rect;
 };
+
 
 // Create a clipping mask for the image
 export const createClippingMask = (canvas, stencil, image) => {
