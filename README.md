@@ -38,7 +38,7 @@ Clone the repository:
 
 ```bash
 git clone https://github.com/whistlewithme/Canva-Editor.git
-cd canva-stencil-editor
+cd Canva-Editor
 ```
 
 Install dependencies:
