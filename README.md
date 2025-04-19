@@ -1,4 +1,4 @@
-                                                                  ![Welcome Animation](./public/assets/GIFs/AppyPie.gif)
+..................................................................![Welcome Animation](./public/assets/GIFs/AppyPie.gif)...........................................................................
 
 # 🎨 Appy Pie Canva Replicate
 
