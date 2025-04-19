@@ -36,6 +36,7 @@
 .control-button:hover {
   background-color: #f3f4f6;
   border-color: #9ca3af;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
 .control-button:active {
@@ -63,6 +64,7 @@
   cursor: pointer;
   transition: all 0.2s;
   flex: 1;
+  font-weight: 500;
 }
 
 .reset-button:hover {
@@ -88,10 +90,12 @@
 .reset-all-button {
   background-color: #ff4d4f;
   color: white;
+  font-weight: 500;
 }
 
 .reset-all-button:hover:not(:disabled) {
   background-color: #ff7875;
+  box-shadow: 0 2px 5px rgba(255, 77, 79, 0.2);
 }
 
 .reset-button:disabled, .reset-all-button:disabled {
