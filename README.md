@@ -1,3 +1,6 @@
+![Welcome Animation](./public/assets/Welcome.gif)
+
+
 # 🎨 Appy Pie Canva Replicate
 
 A web-based image editing tool inspired by Canva. This application allows users to upload images, adjust them within a stencil frame!
