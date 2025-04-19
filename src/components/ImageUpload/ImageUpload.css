@@ -1,0 +1,18 @@
+.image-upload {
+  margin: 20px 0;
+}
+
+.upload-button {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.upload-button:hover {
+  background-color: #3367d6;
+} 

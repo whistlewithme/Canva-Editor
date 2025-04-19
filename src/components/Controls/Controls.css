@@ -1,0 +1,78 @@
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+  gap: 15px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.control-button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.control-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.zoom-level {
+  font-size: 16px;
+  min-width: 60px;
+  text-align: center;
+}
+
+.reset-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.reset-button, .reset-all-button {
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.reset-button {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.reset-button:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.reset-all-button {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.reset-all-button:hover:not(:disabled) {
+  background-color: #ff7875;
+}
+
+.reset-button:disabled, .reset-all-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+} 
