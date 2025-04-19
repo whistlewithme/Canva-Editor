@@ -95,13 +95,13 @@ const Canvas = () => {
     stencil.on('mouseup', (e) => {
       const newWidth = stencil.width * stencil.scaleX;
       const newHeight = stencil.height * stencil.scaleY;
-    
+
       const oldWidth = stencil.originalWidth || stencil.width;
       const oldHeight = stencil.originalHeight || stencil.height;
-    
+
       const scaleX = newWidth / oldWidth;
       const scaleY = newHeight / oldHeight;
-    
+
       // 🔁 Only proceed if resized
       if (
         (stencilDragStart &&
@@ -118,21 +118,21 @@ const Canvas = () => {
           scaleY: 1
         });
         stencil.setCoords();
-    
+
         // Save new original size
         stencil.originalWidth = newWidth;
         stencil.originalHeight = newHeight;
-    
+
         // 2. Resize the image proportionally
         if (imageRef.current) {
           const img = imageRef.current;
-    
+
           const newImageScaleX = img.scaleX * scaleX;
           const newImageScaleY = img.scaleY * scaleY;
-    
+
           img.scaleX = newImageScaleX;
           img.scaleY = newImageScaleY;
-    
+
           // 3. Update clipping mask size
           if (img.clipPath) {
             img.clipPath.width = newWidth;
@@ -140,11 +140,11 @@ const Canvas = () => {
             img.clipPath.left = stencil.left;
             img.clipPath.top = stencil.top;
           }
-    
+
           // 4. Update zoom in Redux
           dispatch(setZoom(newImageScaleX));
         }
-    
+
         // 5. Update Redux for position
         dispatch({
           type: 'editor/updateStencilPositionWithHistory',
@@ -158,18 +158,18 @@ const Canvas = () => {
             }
           }
         });
-    
+
         dispatch(setPosition({
           x: imageRef.current?.left,
           y: imageRef.current?.top
         }));
-    
+
         fabricCanvasRef.current.renderAll();
       }
-    
+
       setStencilDragStart(null);
     });
-    
+
 
     // Set up image dragging events
     canvas.on('mouse:down', (opt) => {
@@ -284,12 +284,35 @@ const Canvas = () => {
         fabricImage.set({
           selectable: true,
           evented: true,
-          hasBorders: false,
-          hasControls: false,
+          hasBorders: true,
+          hasControls: true,
+          lockRotation: true,
+          lockScalingFlip: true,
           hoverCursor: 'move',
-          perPixelTargetFind: true,
-          targetFindTolerance: 4
+          cornerStyle: 'circle',
+          cornerColor: 'green',
+          transparentCorners: false
         });
+
+        fabricImage.setControlsVisibility({
+          mt: false, mb: false, ml: false, mr: false,
+          tl: true, tr: true, bl: true, br: true
+        });
+        fabricImage.on('scaling', () => {
+          if (!stencilRef.current) return;
+
+          // Update clipPath dimensions to stencil size
+          if (fabricImage.clipPath) {
+            fabricImage.clipPath.width = stencilRef.current.width;
+            fabricImage.clipPath.height = stencilRef.current.height;
+            fabricImage.clipPath.left = stencilRef.current.left;
+            fabricImage.clipPath.top = stencilRef.current.top;
+          }
+
+          // Optionally update zoom value in Redux
+          dispatch(setZoom(fabricImage.scaleX));
+        });
+
 
         // Move the image to the front by removing and re-adding it
         fabricCanvasRef.current.remove(fabricImage);
