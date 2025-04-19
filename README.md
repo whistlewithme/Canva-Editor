@@ -1,6 +1,4 @@
-<div align="center">
-  ![Welcome Animation](./public/assets/GIFs/AppyPie.gif)
-</div>
+                                                                  ![Welcome Animation](./public/assets/GIFs/AppyPie.gif)
 
 # 🎨 Appy Pie Canva Replicate
 
