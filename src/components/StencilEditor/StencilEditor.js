@@ -1,27 +1,137 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Canvas from '../Canvas/Canvas';
 import Controls from '../Controls/Controls';
 import ImageUpload from '../ImageUpload/ImageUpload';
 import DebugPanel from '../DebugPanel/DebugPanel';
+import { setCanvasSize } from '../../redux/editorSlice';
 import './StencilEditor.css';
 
 const StencilEditor = () => {
-  const { image } = useSelector(state => state.editor);
+  const dispatch = useDispatch();
+  const { image, canvasSize } = useSelector(state => state.editor);
+  const [width, setWidth] = useState(canvasSize.width);
+  const [height, setHeight] = useState(canvasSize.height);
+  const [maxWidth, setMaxWidth] = useState(2000);
+  const [maxHeight, setMaxHeight] = useState(2000);
   
+  const containerRef = useRef(null);
+
+  // Calculate max dimensions based on container size
+  useEffect(() => {
+    const updateMaxDimensions = () => {
+      if (containerRef.current) {
+        // Get the container dimensions, accounting for padding and borders
+        const containerRect = containerRef.current.getBoundingClientRect();
+        // Subtract some padding to ensure it fits within the container
+        const availableWidth = containerRect.width - 40; // 20px padding on each side
+        const availableHeight = containerRect.height - 40;
+        
+        setMaxWidth(Math.floor(availableWidth));
+        setMaxHeight(Math.floor(availableHeight));
+        
+        // If current dimensions exceed the new max, adjust them
+        if (width > availableWidth) {
+          setWidth(Math.floor(availableWidth));
+        }
+        if (height > availableHeight) {
+          setHeight(Math.floor(availableHeight));
+        }
+      }
+    };
+
+    // Initial calculation
+    updateMaxDimensions();
+    
+    // Recalculate on window resize
+    window.addEventListener('resize', updateMaxDimensions);
+    
+    return () => {
+      window.removeEventListener('resize', updateMaxDimensions);
+    };
+  }, [width, height]);
+
+  // Update local state when Redux state changes
+  useEffect(() => {
+    setWidth(canvasSize.width);
+    setHeight(canvasSize.height);
+  }, [canvasSize]);
+
+  const handleWidthChange = (e) => {
+    const newWidth = parseInt(e.target.value, 10);
+    if (!isNaN(newWidth) && newWidth > 0 && newWidth <= maxWidth) {
+      setWidth(newWidth);
+    }
+  };
+
+  const handleHeightChange = (e) => {
+    const newHeight = parseInt(e.target.value, 10);
+    if (!isNaN(newHeight) && newHeight > 0 && newHeight <= maxHeight) {
+      setHeight(newHeight);
+    }
+  };
+
+  const handleSizeUpdate = () => {
+    // Ensure dimensions don't exceed container
+    const validatedWidth = Math.min(width, maxWidth);
+    const validatedHeight = Math.min(height, maxHeight);
+    
+    dispatch(setCanvasSize({ 
+      width: validatedWidth, 
+      height: validatedHeight 
+    }));
+  };
+
   return (
     <div className="stencil-editor">
       <div className="editor-header">
         <div className="app-logo">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 16V8.00002C21 6.34317 19.6569 5.00002 18 5.00002H6C4.34315 5.00002 3 6.34317 3 8.00002V16C3 17.6569 4.34315 19 6 19H18C19.6569 19 21 17.6569 21 16Z" stroke="#4ca1af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M3 16L8.22999 10.77C8.63274 10.3673 9.36128 10.3673 9.76404 10.77L14.24 15.246C14.6427 15.6488 15.3713 15.6488 15.774 15.246L17 14.02C17.4027 13.6173 18.1313 13.6173 18.534 14.02L21 16.5" stroke="#2c3e50" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M16 10C16.5523 10 17 9.55228 17 9C17 8.44772 16.5523 8 16 8C15.4477 8 15 8.44772 15 9C15 9.55228 15.4477 10 16 10Z" fill="#4ca1af" stroke="#4ca1af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <svg width="52" height="52" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: '#4ca1af', stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: '#2c3e50', stopOpacity: 1 }} />
+              </linearGradient>
+            </defs>
+            <rect x="3" y="4" width="18" height="16" rx="3" ry="3" stroke="url(#grad)" stroke-width="2" fill="none" />
+            <circle cx="8" cy="8" r="2" fill="url(#grad)" />
+            <path d="M3 17L9 11C9.5 10.5 10.5 10.5 11 11L15 15L17 13C17.5 12.5 18.5 12.5 19 13L21 15" stroke="url(#grad)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
           <span>Stencil Editor</span>
         </div>
+        
+        <div className="canvas-size-controls">
+          <div className="size-input-group">
+            <label htmlFor="canvas-width">Width:</label>
+            <input 
+              id="canvas-width"
+              type="number" 
+              value={width} 
+              onChange={handleWidthChange}
+              min="300"
+              max={maxWidth}
+            />
+          </div>
+          <div className="size-input-group">
+            <label htmlFor="canvas-height">Height:</label>
+            <input 
+              id="canvas-height"
+              type="number" 
+              value={height} 
+              onChange={handleHeightChange}
+              min="300"
+              max={maxHeight}
+            />
+          </div>
+          <button 
+            className="apply-size-button"
+            onClick={handleSizeUpdate}
+          >
+            Apply Size
+          </button>
+        </div>
       </div>
-      <div className="editor-container">
+      <div className="editor-container" ref={containerRef}>
         <Canvas />
         <div className="editor-sidebar">
           <ImageUpload />
@@ -30,6 +140,12 @@ const StencilEditor = () => {
             <div className="empty-state">
               <p>Upload an image to get started</p>
               <p>You can then zoom and move the image within the stencil frame</p>
+            </div>
+          )}
+          {image && (
+            <div className="image-info">
+              <p>Image dimensions: {image.width}x{image.height}</p>
+              <p>Image type: {image.type}</p>
             </div>
           )}
         </div>

@@ -31,7 +31,8 @@ const Canvas = () => {
     zoom,
     position,
     stencilPosition,
-    stencilLoaded
+    stencilLoaded,
+    canvasSize
   } = useSelector(state => state.editor);
 
   const [dragStartPosition, setDragStartPosition] = useState(null);
@@ -40,10 +41,10 @@ const Canvas = () => {
 
   // Initialize canvas - make it larger to allow stencil movement
   useEffect(() => {
-    console.log('Initializing canvas');
+    console.log('Initializing canvas with size:', canvasSize);
     const canvas = new FabricCanvas('canvas', {
-      width: 1000,
-      height: 800,
+      width: canvasSize.width,
+      height: canvasSize.height,
       selection: false,
       backgroundColor: '#f0f0f0' // Light gray background
     });
@@ -246,7 +247,7 @@ const Canvas = () => {
       console.log('Disposing canvas');
       canvas.dispose();
     };
-  }, [dispatch]);
+  }, [dispatch, canvasSize]);
 
   // Handle image data changes
   useEffect(() => {
@@ -454,7 +455,7 @@ const Canvas = () => {
       if (e.key === 'Shift') {
         // When Shift is pressed, switch to stencil dragging mode
         setDragMode('stencil');
-        if (stencilRef.current && imageRef.current) {
+        if (stencilRef.current) {
           console.log('Switching to stencil mode');
           stencilRef.current.selectable = true;
           stencilRef.current.evented = true;
@@ -464,10 +465,6 @@ const Canvas = () => {
           // Make sure the stencil is in front for selection
           fabricCanvasRef.current.remove(stencilRef.current);
           fabricCanvasRef.current.add(stencilRef.current);
-
-          // Disable image selection
-          imageRef.current.selectable = false;
-          imageRef.current.evented = false;
 
           fabricCanvasRef.current.renderAll();
           fabricCanvasRef.current.setActiveObject(stencilRef.current);

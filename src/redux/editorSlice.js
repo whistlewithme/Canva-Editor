@@ -6,6 +6,7 @@ const initialState = {
   position: { x: 0, y: 0 },
   stencilPosition: { x: 200, y: 200 }, // Initial stencil position
   stencilLoaded: false,
+  canvasSize: { width: 1000, height: 800 }, // Default canvas size
   history: [],        // Past states
   future: [],         // Future states (for redo)
   initialState: null  // Initial state after loading image
@@ -179,6 +180,9 @@ export const editorSlice = createSlice({
       
       // Update stencil position
       state.stencilPosition = newPosition;
+    },
+    setCanvasSize: (state, action) => {
+      state.canvasSize = action.payload;
     }
   }
 });
@@ -188,6 +192,7 @@ export const {
   setZoom, 
   setPosition, 
   setStencilLoaded, 
+  setCanvasSize,
   undoChange,
   redoChange,
   resetToInitial,
