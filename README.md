@@ -1,71 +1,106 @@
-# Getting Started with Create React App
+# 🎨 Appy Pie Canva Replicate
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A web-based image editing tool inspired by Canva. This application allows users to upload images, adjust them within a stencil frame!
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## ✨ Features
 
-### `npm start`
+- 📸 **Image upload and manipulation**
+- 🖼️ **Stencil-based design with adjustable frames**
+- 🔍 **Zoom and positioning controls**
+- ↩️ **Undo/Redo functionality**
+- 📱 **Responsive design for all devices**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Technologies Used
 
-### `npm test`
+- ⚛️ **React.js** – for UI components  
+- 🔄 **Redux** – for state management  
+- 🎨 **Fabric.js** – for canvas manipulation  
+- 🎨 **CSS** – for styling and layout
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+## 🚀 Getting Started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### ✅ Prerequisites
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js (v14.0.0 or higher)  
+- npm (v6.0.0 or higher)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 📦 Installation
 
-### `npm run eject`
+Clone the repository:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```bash
+git clone https://github.com/your-username/appy-pie-canva-replicate.git
+cd canva-stencil-editor
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Install dependencies:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Start the development server:
 
-## Learn More
+```bash
+npm start
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Open your browser and navigate to:  
+[http://localhost:3000](http://localhost:3000)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 📖 Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 🔼 Upload an Image
+Click **Upload Image** to select an image from your device.
 
-### Analyzing the Bundle Size
+### 🛠️ Adjust the Image
+- Resize the canvas using the top-right size inputs.
+- Use `+` / `-` zoom buttons to resize the image.
+- Click and drag to move the image within the stencil.
+- Hold **Shift** and use zoom controls to resize the stencil frame.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### ↩️ Undo / Redo Changes
+Use **Undo** and **Redo** buttons to navigate your edit history.
 
-### Making a Progressive Web App
+### 🔁 Reset
+Click the **Reset** button to return to the initial state.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### ✏️ Stencil Manipulation
+- Hold **Shift** to select and move the stencil frame.
+- Release **Shift** to return to image mode.
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📁 Project Structure
 
-### Deployment
+```
+src/
+├── components/
+│   ├── Canvas/           # Canvas rendering and interaction
+│   ├── Controls/         # Zoom and editing controls
+│   ├── DebugPanel/       # Development debugging tools
+│   ├── ImageUpload/      # Image upload functionality
+│   ├── StencilEditor/    # Main editor component
+│   └── WelcomeAnimation/ # Welcome screen animation
+├── redux/                # Redux state management
+├── utils/                # Utility functions for Fabric.js
+├── App.js                # Main application component
+└── index.js              # Application entry point
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
+## 🧰 Tools Used
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
-# Canva-Editor
+- 🖱️ **Cursor** – for an AI-assisted coding environment  
+- 💬 **Stack Overflow** – for community wisdom and quick bug fixes  
+- 🧠 **ChatGPT** – for explanations, code suggestions, and guidance  
+- 🤖 **Claude AI** – for brainstorming and co-piloting development ideas  
