@@ -4,12 +4,26 @@ const initialState = {
   imageData: null,
   zoom: 1,
   position: { x: 0, y: 0 },
-  stencilPosition: { x: 200, y: 200 }, // Initial stencil position
+  stencilPosition: { x: 200, y: 200, width: 600, height: 400 }, // Include width and height
   stencilLoaded: false,
   canvasSize: { width: 1000, height: 800 }, // Default canvas size
   history: [],        // Past states
   future: [],         // Future states (for redo)
   initialState: null  // Initial state after loading image
+};
+
+// Helper function to create a complete state snapshot
+const createStateSnapshot = (state) => ({
+  zoom: state.zoom,
+  position: { ...state.position },
+  stencilPosition: { ...state.stencilPosition }
+});
+
+// Helper function to apply a state snapshot
+const applyStateSnapshot = (state, snapshot) => {
+  state.zoom = snapshot.zoom;
+  state.position = snapshot.position;
+  state.stencilPosition = snapshot.stencilPosition;
 };
 
 export const editorSlice = createSlice({
@@ -26,10 +40,7 @@ export const editorSlice = createSlice({
       // Only save to history if the value is actually changing
       if (state.zoom !== action.payload) {
         // Save current state to history
-        state.history.push({
-          zoom: state.zoom,
-          position: { ...state.position }
-        });
+        state.history.push(createStateSnapshot(state));
         // Clear future history when making a new change
         state.future = [];
         state.zoom = action.payload;
@@ -39,10 +50,7 @@ export const editorSlice = createSlice({
       // Only save to history if the position is actually changing
       if (state.position.x !== action.payload.x || state.position.y !== action.payload.y) {
         // Save current state to history
-        state.history.push({
-          zoom: state.zoom,
-          position: { ...state.position }
-        });
+        state.history.push(createStateSnapshot(state));
         // Clear future history when making a new change
         state.future = [];
         state.position = action.payload;
@@ -58,14 +66,10 @@ export const editorSlice = createSlice({
         const previousState = state.history.pop();
         
         // Save current state to future for possible redo
-        state.future.push({
-          zoom: state.zoom,
-          position: { ...state.position }
-        });
+        state.future.push(createStateSnapshot(state));
         
         // Apply the previous state
-        state.zoom = previousState.zoom;
-        state.position = previousState.position;
+        applyStateSnapshot(state, previousState);
       }
     },
     // Redo: Go forward one step in history
@@ -75,31 +79,23 @@ export const editorSlice = createSlice({
         const nextState = state.future.pop();
         
         // Save current state to history
-        state.history.push({
-          zoom: state.zoom,
-          position: { ...state.position }
-        });
+        state.history.push(createStateSnapshot(state));
         
         // Apply the next state
-        state.zoom = nextState.zoom;
-        state.position = nextState.position;
+        applyStateSnapshot(state, nextState);
       }
     },
     // Reset: Go back to initial state
     resetToInitial: (state) => {
       if (state.initialState) {
         // Save current state to history before resetting
-        state.history.push({
-          zoom: state.zoom,
-          position: { ...state.position }
-        });
+        state.history.push(createStateSnapshot(state));
         
         // Clear future history
         state.future = [];
         
         // Apply initial state
-        state.zoom = state.initialState.zoom;
-        state.position = state.initialState.position;
+        applyStateSnapshot(state, state.initialState);
       }
     },
     // Reset All: Clear everything
@@ -107,79 +103,81 @@ export const editorSlice = createSlice({
       state.imageData = null;
       state.zoom = 1;
       state.position = { x: 0, y: 0 };
+      state.stencilPosition = { x: 200, y: 200, width: 600, height: 400 };
       state.history = [];
       state.future = [];
       state.initialState = null;
     },
     // Save the initial state after loading an image
     saveInitialState: (state, action) => {
-      state.initialState = action.payload;
+      state.initialState = {
+        zoom: action.payload.zoom,
+        position: action.payload.position,
+        stencilPosition: { ...state.stencilPosition }
+      };
       // Clear history when setting initial state
       state.history = [];
       state.future = [];
     },
-    // Add this new reducer
-    savePositionToHistory: (state, action) => {
-      // Save the position to history without changing the current state
-      state.history.push({
-        zoom: state.zoom,
-        position: action.payload
-      });
-      
-      // Clear future history
+    // Save state before making changes
+    saveStateToHistory: (state) => {
+      state.history.push(createStateSnapshot(state));
       state.future = [];
     },
-    // Add this new reducer
+    // Update position with history tracking
     updatePositionWithHistory: (state, action) => {
       const { previousPosition, newPosition } = action.payload;
       
       // First, save the previous position to history
-      state.history.push({
-        zoom: state.zoom,
-        position: previousPosition
-      });
+      state.history.push(createStateSnapshot(state));
       
       // Clear future history
       state.future = [];
       
       // Then update the current position
       state.position = newPosition;
-      
-      console.log('Position updated with history:', {
-        history: state.history,
-        current: state.position
-      });
     },
+    // Set stencil position with history tracking
     setStencilPosition: (state, action) => {
       // Only save to history if the position is actually changing
       if (state.stencilPosition.x !== action.payload.x || 
-          state.stencilPosition.y !== action.payload.y) {
+          state.stencilPosition.y !== action.payload.y ||
+          (action.payload.width && state.stencilPosition.width !== action.payload.width) ||
+          (action.payload.height && state.stencilPosition.height !== action.payload.height)) {
         
-        state.history.push({
-          zoom: state.zoom,
-          position: { ...state.position },
-          stencilPosition: { ...state.stencilPosition }
-        });
-        
+        state.history.push(createStateSnapshot(state));
         state.future = [];
-        state.stencilPosition = action.payload;
+        
+        // Update with new values while preserving any unspecified properties
+        state.stencilPosition = {
+          ...state.stencilPosition,
+          ...action.payload
+        };
       }
     },
+    // Update stencil position with history tracking
     updateStencilPositionWithHistory: (state, action) => {
       const { previousPosition, newPosition } = action.payload;
       
-      // Save previous state to history
-      state.history.push({
-        zoom: state.zoom,
-        position: { ...state.position },
-        stencilPosition: previousPosition
+      console.log('Updating stencil position with history:', {
+        previous: previousPosition,
+        new: newPosition
       });
+      
+      // Save previous state to history
+      state.history.push(createStateSnapshot(state));
       
       // Clear future history
       state.future = [];
       
       // Update stencil position
-      state.stencilPosition = newPosition;
+      state.stencilPosition = {
+        ...state.stencilPosition,
+        ...newPosition
+      };
+      
+      console.log('Updated stencil position:', state.stencilPosition);
+      console.log('History length:', state.history.length);
     },
     setCanvasSize: (state, action) => {
       state.canvasSize = action.payload;
@@ -198,7 +196,7 @@ export const {
   resetToInitial,
   resetAll,
   saveInitialState,
-  savePositionToHistory,
+  saveStateToHistory,
   updatePositionWithHistory,
   setStencilPosition,
   updateStencilPositionWithHistory

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { setZoom, undoChange, redoChange, resetToInitial } from '../../redux/editorSlice';
+import { setZoom, undoChange, redoChange, resetToInitial, saveStateToHistory } from '../../redux/editorSlice';
 import './Controls.css';
 import React, { useState, useEffect } from 'react';
 
@@ -32,6 +32,9 @@ const Controls = () => {
   const maxZoom = 3.0;
 
   const handleZoomIn = () => {
+    // Save current state to history before making changes
+    dispatch(saveStateToHistory());
+    
     if (isShiftPressed) {
       window.dispatchEvent(new CustomEvent('resizeStencil', { detail: { type: 'increase' } }));
     } else {
@@ -41,6 +44,9 @@ const Controls = () => {
   };
 
   const handleZoomOut = () => {
+    // Save current state to history before making changes
+    dispatch(saveStateToHistory());
+    
     if (isShiftPressed) {
       window.dispatchEvent(new CustomEvent('resizeStencil', { detail: { type: 'decrease' } }));
     } else {
@@ -48,7 +54,6 @@ const Controls = () => {
       dispatch(setZoom(newZoom));
     }
   };
-
 
   const handleUndo = () => {
     dispatch(undoChange());

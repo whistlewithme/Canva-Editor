@@ -13,7 +13,9 @@ import {
   setStencilLoaded,
   setPosition,
   setZoom,
-  setStencilPosition
+  setStencilPosition,
+  updateStencilPositionWithHistory,
+  saveStateToHistory
 } from '../../redux/editorSlice';
 import './Canvas.css';
 
@@ -85,12 +87,17 @@ const Canvas = () => {
       // Store starting position for history
       setStencilDragStart({
         x: stencil.left,
-        y: stencil.top
+        y: stencil.top,
+        width: stencil.width,
+        height: stencil.height
       });
 
       // Store previous position for movement calculation
       stencil._previousLeft = stencil.left;
       stencil._previousTop = stencil.top;
+      
+      // Save the current state to history before making changes
+      dispatch(saveStateToHistory());
     });
 
     stencil.on('mouseup', (e) => {
@@ -103,7 +110,7 @@ const Canvas = () => {
       const scaleX = newWidth / oldWidth;
       const scaleY = newHeight / oldHeight;
 
-      // 🔁 Only proceed if resized
+      // Only proceed if resized or moved
       if (
         (stencilDragStart &&
           (stencilDragStart.x !== stencil.left ||
@@ -111,6 +118,15 @@ const Canvas = () => {
         scaleX !== 1 ||
         scaleY !== 1
       ) {
+        console.log('Stencil resized or moved, updating state');
+        console.log('Previous state:', stencilDragStart);
+        console.log('New state:', {
+          x: stencil.left,
+          y: stencil.top,
+          width: newWidth,
+          height: newHeight
+        });
+
         // 1. Apply new dimensions & reset scale
         stencil.set({
           width: newWidth,
@@ -146,19 +162,16 @@ const Canvas = () => {
           dispatch(setZoom(newImageScaleX));
         }
 
-        // 5. Update Redux for position
-        dispatch({
-          type: 'editor/updateStencilPositionWithHistory',
-          payload: {
-            previousPosition: stencilDragStart,
-            newPosition: {
-              x: stencil.left,
-              y: stencil.top,
-              width: newWidth,
-              height: newHeight
-            }
+        // 5. Update Redux for position with complete stencil info
+        dispatch(updateStencilPositionWithHistory({
+          previousPosition: stencilDragStart,
+          newPosition: {
+            x: stencil.left,
+            y: stencil.top,
+            width: newWidth,
+            height: newHeight
           }
-        });
+        }));
 
         dispatch(setPosition({
           x: imageRef.current?.left,
@@ -171,6 +184,15 @@ const Canvas = () => {
       setStencilDragStart(null);
     });
 
+    stencil.on('scaling', () => {
+      console.log('Stencil scaling');
+      // We don't need to do anything here, just log for debugging
+    });
+
+    stencil.on('scaled', () => {
+      console.log('Stencil scaled');
+      // We don't need to do anything here, just log for debugging
+    });
 
     // Set up image dragging events
     canvas.on('mouse:down', (opt) => {
@@ -509,6 +531,9 @@ const Canvas = () => {
     const handleResizeStencil = (e) => {
       if (!stencilRef.current || !fabricCanvasRef.current || !imageRef.current) return;
 
+      // Save the current state to history before making changes
+      dispatch(saveStateToHistory());
+
       const stencil = stencilRef.current;
       const image = imageRef.current;
       const delta = 20;
@@ -554,6 +579,14 @@ const Canvas = () => {
         image.clipPath.top = stencil.top;
       }
 
+      // Update stencil position in Redux
+      dispatch(setStencilPosition({
+        x: stencil.left,
+        y: stencil.top,
+        width: stencil.width,
+        height: stencil.height
+      }));
+
       fabricCanvasRef.current.renderAll();
     };
 
@@ -562,7 +595,7 @@ const Canvas = () => {
     return () => {
       window.removeEventListener('resizeStencil', handleResizeStencil);
     };
-  }, []);
+  }, [dispatch]);
 
 
   return (
