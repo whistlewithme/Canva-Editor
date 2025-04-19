@@ -1,37 +1,87 @@
 .controls {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin: 20px 0;
   gap: 15px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
 }
 
 .zoom-controls {
   display: flex;
-  align-items: center;
+  justify-content: center;
   gap: 10px;
+  margin-bottom: 10px;
+}
+
+.reset-controls {
+  display: flex;
+  justify-content: space-between;
+  background: white;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .control-button {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background-color: #f1f1f1;
-  border: 1px solid #ddd;
-  font-size: 20px;
+  border: none;
+  background: white;
+  color: #333;
+  font-size: 16px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.control-button:hover:not(:disabled) {
-  background-color: #e0e0e0;
+.control-button:hover {
+  background: #f5f5f5;
+}
+
+.control-button:active {
+  background: #eeeeee;
 }
 
 .control-button:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.reset-button {
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reset-button svg {
+  width: 18px;
+  height: 18px;
+  color: #555;
+}
+
+.reset-button:hover {
+  background: #f5f5f5;
+  border-radius: 4px;
+}
+
+.reset-button:active {
+  background: #eeeeee;
+}
+
+.reset-button:disabled {
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
@@ -39,28 +89,6 @@
   font-size: 16px;
   min-width: 60px;
   text-align: center;
-}
-
-.reset-controls {
-  display: flex;
-  gap: 10px;
-}
-
-.reset-button, .reset-all-button {
-  padding: 8px 16px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.reset-button {
-  background-color: #f1f1f1;
-  color: #333;
-}
-
-.reset-button:hover:not(:disabled) {
-  background-color: #e0e0e0;
 }
 
 .reset-all-button {

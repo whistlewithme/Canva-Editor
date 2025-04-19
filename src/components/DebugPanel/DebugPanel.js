@@ -1,34 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import './DebugPanel.css';
 
 const DebugPanel = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const state = useSelector(state => state.editor);
   
   return (
-    <div style={{ 
-      position: 'fixed', 
-      bottom: 0, 
-      right: 0, 
-      background: 'rgba(0,0,0,0.7)', 
-      color: 'white',
-      padding: '10px',
-      fontSize: '12px',
-      fontFamily: 'monospace',
-      maxWidth: '300px',
-      zIndex: 9999
-    }}>
-      <h4>Debug State:</h4>
-      <pre>{JSON.stringify({
-        hasImage: !!state.image,
-        imageType: state.image ? state.image.type : 'none',
-        imageProps: state.image ? {
-          width: state.image.width,
-          height: state.image.height
-        } : 'none',
-        zoom: state.zoom,
-        position: state.position,
-        stencilLoaded: state.stencilLoaded
-      }, null, 2)}</pre>
+    <div className={`debug-panel ${isExpanded ? 'expanded' : 'collapsed'}`}>
+      <div className="debug-header" onClick={() => setIsExpanded(!isExpanded)}>
+        <h4>Debug Info {isExpanded ? '▼' : '▶'}</h4>
+      </div>
+      {isExpanded && (
+        <div className="debug-content">
+          <pre>{JSON.stringify({
+            hasImage: !!state.image,
+            imageType: state.image ? state.image.type : 'none',
+            imageProps: state.image ? {
+              width: state.image.width,
+              height: state.image.height
+            } : 'none',
+            zoom: state.zoom,
+            position: state.position,
+            stencilLoaded: state.stencilLoaded
+          }, null, 2)}</pre>
+        </div>
+      )}
     </div>
   );
 };
