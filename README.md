@@ -37,7 +37,7 @@ A web-based image editing tool inspired by Canva. This application allows users 
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/appy-pie-canva-replicate.git
+git clone https://github.com/whistlewithme/Canva-Editor.git
 cd canva-stencil-editor
 ```
 
