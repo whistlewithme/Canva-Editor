@@ -4,30 +4,34 @@
 
 .upload-button {
   width: 100%;
-  padding: 12px 16px;
+  padding: 14px 18px;
   background-color: #3b82f6;
   color: white;
   border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.25);
 }
 
 .upload-button:hover {
   background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.35);
 }
 
 .upload-button:active {
   background-color: #1d4ed8;
+  transform: translateY(0);
 }
 
 .upload-button svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 } 

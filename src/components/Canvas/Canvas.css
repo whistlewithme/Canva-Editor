@@ -14,11 +14,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 8px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
 }
 
 canvas {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.03);
-  border-radius: 4px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 12px 24px rgba(0, 0, 0, 0.06);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .drag-mode-indicator {
@@ -26,16 +30,17 @@ canvas {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(31, 41, 55, 0.8);
+  background-color: rgba(31, 41, 55, 0.9);
   color: white;
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 24px;
+  font-size: 15px;
+  font-weight: 600;
   pointer-events: none;
   transition: opacity 0.3s;
-  opacity: 0.8;
+  opacity: 0.9;
   z-index: 100;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .drag-mode-indicator:hover {

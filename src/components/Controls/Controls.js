@@ -34,7 +34,7 @@ const Controls = () => {
   const handleZoomIn = () => {
     // Save current state to history before making changes
     dispatch(saveStateToHistory());
-    
+
     if (isShiftPressed) {
       window.dispatchEvent(new CustomEvent('resizeStencil', { detail: { type: 'increase' } }));
     } else {
@@ -46,7 +46,7 @@ const Controls = () => {
   const handleZoomOut = () => {
     // Save current state to history before making changes
     dispatch(saveStateToHistory());
-    
+
     if (isShiftPressed) {
       window.dispatchEvent(new CustomEvent('resizeStencil', { detail: { type: 'decrease' } }));
     } else {
@@ -79,7 +79,7 @@ const Controls = () => {
           disabled={isDisabled || zoom <= minZoom}
           aria-label="Zoom out"
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M6 12H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </button>
@@ -89,7 +89,7 @@ const Controls = () => {
           disabled={isDisabled || zoom >= maxZoom}
           aria-label="Zoom in"
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="28" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 6V18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             <path d="M6 12H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
@@ -103,7 +103,7 @@ const Controls = () => {
           disabled={isDisabled || history.length === 0}
           aria-label="Undo"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M10 16L4 12L10 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M4 12H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -114,7 +114,7 @@ const Controls = () => {
           disabled={isDisabled || future.length === 0}
           aria-label="Redo"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14 8L20 12L14 16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M20 12H4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -125,10 +125,11 @@ const Controls = () => {
           disabled={isDisabled}
           aria-label="Reset"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 4V8H19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M9 20V16H5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M20 9L15 4L8 11L4 15L9 20L16 13L20 9Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg width="20" height="20" viewBox="0 0 21 21" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" fill-rule="evenodd" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" transform="matrix(0 1 1 0 2.5 2.5)">
+              <path d="m3.98652376 1.07807068c-2.38377179 1.38514556-3.98652376 3.96636605-3.98652376 6.92192932 0 4.418278 3.581722 8 8 8s8-3.581722 8-8-3.581722-8-8-8" />
+              <path d="m4 1v4h-4" transform="matrix(1 0 0 -1 0 6)" />
+            </g>
           </svg>
         </button>
       </div>
