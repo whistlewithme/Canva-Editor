@@ -125,18 +125,12 @@ const StencilEditor = () => {
         <div className="editor-sidebar">
           <ImageUpload />
           <Controls />
-          {!image && (
             <div className="empty-state">
-              <p>Upload an image to get started</p>
-              <p>You can then zoom and move the image within the stencil frame</p>
+              <p>Instructions</p>
+              <p>1. You can resize the canvas using Width and Height controls (Top Right Corner)</p>
+              <p>2. Press Shift Key to Move or Resize the Stencil</p>
+              <p>3. Debug Info was added to Check help with resolving issues</p>
             </div>
-          )}
-          {image && (
-            <div className="image-info">
-              <p>Image dimensions: {image.width}x{image.height}</p>
-              <p>Image type: {image.type}</p>
-            </div>
-          )}
         </div>
       </div>
       <DebugPanel />
