@@ -1,6 +1,6 @@
 # DEMO GIF
 
-![Welcome Animation](./public/assets/GIFs/AppyPie.gif)
+![Welcome Animation](./public/assets/AppyPie.gif)
 
 # 🎨 Appy Pie Canva Replicate
 
