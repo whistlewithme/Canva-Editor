@@ -129,7 +129,6 @@ const StencilEditor = () => {
               <p>Instructions</p>
               <p>1. You can resize the canvas using Width and Height controls (Top Right Corner)</p>
               <p>2. Press Shift Key to Move or Resize the Stencil</p>
-              <p>3. Debug Info was added to Check help with resolving issues</p>
             </div>
         </div>
       </div>
