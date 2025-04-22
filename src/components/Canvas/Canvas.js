@@ -34,7 +34,8 @@ const Canvas = () => {
     position,
     stencilPosition,
     stencilLoaded,
-    canvasSize
+    canvasSize,
+    stencilShape
   } = useSelector(state => state.editor);
 
   const [dragStartPosition, setDragStartPosition] = useState(null);
@@ -55,7 +56,7 @@ const Canvas = () => {
     fabricCanvasRef.current = canvas;
 
     // Create stencil - now make it selectable and movable
-    const stencil = createStencil(canvas, 600, 400);
+    const stencil = createStencil(canvas, 600, 400, stencilShape);
     console.log('Stencil created:', stencil);
     stencilRef.current = stencil;
 
@@ -269,7 +270,7 @@ const Canvas = () => {
       console.log('Disposing canvas');
       canvas.dispose();
     };
-  }, [dispatch, canvasSize]);
+  }, [dispatch, canvasSize, stencilShape]);
 
   // Handle image data changes
   useEffect(() => {

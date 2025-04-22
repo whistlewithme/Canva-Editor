@@ -1,80 +1,103 @@
-import { Canvas as FabricCanvas, Rect, Image as FabricImage } from 'fabric';
+import { Rect, Triangle, Image as FabricImage } from 'fabric';
 
 
-export const createStencil = (canvas, width, height) => {
-  const rect = new Rect({
-    width,
-    height,
+export const createStencil = (canvas, width, height, shape = 'rectangle') => {
+  let stencil;
+  
+  // Common properties for all shapes
+  const commonProps = {
     left: 200,
     top: 200,
-    rx: 20,
-    ry: 20,
     fill: 'rgba(255,255,255,0.2)',
     stroke: '#333',
     strokeWidth: 2,
-
-    // These are the defaults you set
     selectable: false,
     evented: true,
-
-    // ✅ Enable resizing when Shift is pressed (via Canvas.js)
     hasControls: true,
     hasBorders: true,
-
-    // 📌 Custom styling
     cornerSize: 12,
     cornerColor: 'blue',
     cornerStyle: 'circle',
     transparentCorners: false,
-
-    // 📌 No rotation / flipping
     lockRotation: true,
     lockScalingFlip: true,
-
-    // 🖱️ Don't interfere with pixel hit testing
     perPixelTargetFind: false,
-
-    // Optional if you want to start with fixed size
     lockScalingX: true,
     lockScalingY: true
-  });
-
-  // 👇 Optional: Only allow corner resizing (disable sides)
-  rect.setControlsVisibility({
+  };
+  
+  // Create the appropriate shape based on the shape parameter
+  switch (shape) {
+    case 'triangle':
+      stencil = new Triangle({
+        ...commonProps,
+        width: width,
+        height: height
+      });
+      break;
+      
+    case 'rectangle':
+    default:
+      stencil = new Rect({
+        ...commonProps,
+        width: width,
+        height: height,
+        rx: 20,
+        ry: 20
+      });
+      break;
+  }
+  
+  // Set control visibility - only allow corner resizing
+  stencil.setControlsVisibility({
     mt: false, mb: false,
     ml: false, mr: false,
     tl: true, tr: true,
     bl: true, br: true
   });
-
+  
   // Save original dimensions
-  rect.originalWidth = width;
-  rect.originalHeight = height;
-
-  canvas.add(rect);
-  return rect;
+  stencil.originalWidth = width;
+  stencil.originalHeight = height;
+  stencil.shapeType = shape;
+  
+  canvas.add(stencil);
+  return stencil;
 };
 
 
 // Create a clipping mask for the image
 export const createClippingMask = (canvas, stencil, image) => {
-  // Create a clipPath from the stencil
-  const clipPath = new Rect({
-    width: stencil.width,
-    height: stencil.height,
-    left: 0,
-    top: 0,
-    rx: stencil.rx,
-    ry: stencil.ry,
-    absolutePositioned: true
-  });
+  let clipPath;
+  
+  // Create a clipPath based on the stencil's shape
+  switch (stencil.shapeType) {
+    case 'triangle':
+      clipPath = new Triangle({
+        width: stencil.width,
+        height: stencil.height,
+        left: stencil.left,
+        top: stencil.top,
+        absolutePositioned: true
+      });
+      break;
+      
+    case 'rectangle':
+    default:
+      clipPath = new Rect({
+        width: stencil.width,
+        height: stencil.height,
+        left: stencil.left,
+        top: stencil.top,
+        rx: stencil.rx,
+        ry: stencil.ry,
+        absolutePositioned: true
+      });
+      break;
+  }
   
   // Apply the clipPath to the image
   image.clipPath = clipPath;
-  
-  // Position the clipPath relative to the stencil
-  clipPath.left = stencil.left;
-  clipPath.top = stencil.top;
   
   canvas.renderAll();
 };
@@ -146,7 +169,6 @@ export const updateImagePosition = (canvas, image, stencil, position) => {
   const scaledHeight = image.getScaledHeight();
   
   // Calculate boundaries to keep the image covering the stencil
-  // The image should not move so far that it exposes white space
   const minX = stencil.left + stencil.width - scaledWidth;
   const maxX = stencil.left;
   const minY = stencil.top + stencil.height - scaledHeight;
@@ -187,7 +209,7 @@ export const updateImageZoom = (canvas, image, stencil, zoom) => {
   // Instead of multiplying by zoom, set the scale directly to zoom
   // This ensures zoom value is used as an absolute scale, not a relative one
   image.scale(zoom);
-  
+
   console.log('New scale applied:', zoom);
   console.log('Image after zoom:', {
     width: image.width,
@@ -208,13 +230,13 @@ export const updateImageZoom = (canvas, image, stencil, zoom) => {
   }
   
   // Re-center the image if needed
-  if (image.left > stencil.left || 
-      image.left + image.getScaledWidth() < stencil.left + stencil.width) {
+  if (image.left > stencil.left ||
+    image.left + image.getScaledWidth() < stencil.left + stencil.width) {
     image.left = stencil.left + (stencil.width - image.getScaledWidth()) / 2;
   }
-  
-  if (image.top > stencil.top || 
-      image.top + image.getScaledHeight() < stencil.top + stencil.height) {
+
+  if (image.top > stencil.top ||
+    image.top + image.getScaledHeight() < stencil.top + stencil.height) {
     image.top = stencil.top + (stencil.height - image.getScaledHeight()) / 2;
   }
   
@@ -254,10 +276,19 @@ export const updateStencilPosition = (canvas, stencil, image, position) => {
     
     // Update clipPath position
     if (image.clipPath) {
-      image.clipPath.set({
-        left: position.x,
-        top: position.y
-      });
+      if (stencil.shapeType === 'circle') {
+        // For circle, update the center position
+        image.clipPath.set({
+          left: position.x,
+          top: position.y
+        });
+      } else {
+        // For other shapes, update the top-left position
+        image.clipPath.set({
+          left: position.x,
+          top: position.y
+        });
+      }
     }
   }
   

@@ -9,7 +9,7 @@ import './StencilEditor.css';
 
 const StencilEditor = () => {
   const dispatch = useDispatch();
-  const { image, canvasSize } = useSelector(state => state.editor);
+  const { canvasSize, stencilShape } = useSelector(state => state.editor);
   const [width, setWidth] = useState(canvasSize.width);
   const [height, setHeight] = useState(canvasSize.height);
   const [maxWidth, setMaxWidth] = useState(2000);
@@ -128,7 +128,7 @@ const StencilEditor = () => {
             <div className="empty-state">
               <p>Instructions</p>
               <p>1. You can resize the canvas using Width and Height controls (Top Right Corner)</p>
-              <p>2. Press Shift Key to Move or Resize the Stencil</p>
+              <p>2. Press Shift Key to Move or Resize the {stencilShape.charAt(0).toUpperCase() + stencilShape.slice(1)} Stencil</p>
             </div>
         </div>
       </div>

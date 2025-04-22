@@ -4,7 +4,7 @@
 
 # 🎨 Appy Pie Canva Replicate
 
-A web-based image editing tool inspired by Canva. This application allows users to upload images, adjust them within a stencil frame!
+A web-based image editing tool inspired by Canva. This application allows users to upload images, adjust them within a stencil frame, and choose between different stencil shapes!
 
 ---
 
@@ -15,6 +15,7 @@ A web-based image editing tool inspired by Canva. This application allows users 
 - 🔍 **Zoom and positioning controls**
 - ↩️ **Undo/Redo functionality**
 - 📱 **Responsive design for all devices**
+- 🔶 **Multiple stencil shapes** (Rectangle and Triangle)
 
 ---
 
@@ -63,6 +64,9 @@ http://localhost:3000
 
 ## 📖 Usage
 
+### 🔷 Select a Stencil Shape
+After the welcome animation, choose between Rectangle or Triangle stencil shapes.
+
 ### 🔼 Upload an Image
 Click **Upload Image** to select an image from your device.
 
@@ -93,6 +97,7 @@ src/
 │   ├── Controls/         # Zoom and editing controls
 │   ├── DebugPanel/       # Development debugging tools
 │   ├── ImageUpload/      # Image upload functionality
+│   ├── ShapeSelector/    # Stencil shape selection
 │   ├── StencilEditor/    # Main editor component
 │   └── WelcomeAnimation/ # Welcome screen animation
 ├── redux/                # Redux state management

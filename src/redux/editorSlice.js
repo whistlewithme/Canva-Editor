@@ -7,6 +7,7 @@ const initialState = {
   stencilPosition: { x: 200, y: 200, width: 600, height: 400 }, // Include width and height
   stencilLoaded: false,
   canvasSize: { width: 1000, height: 800 }, // Default canvas size
+  stencilShape: 'rectangle',
   history: [],        // Past states
   future: [],         // Future states (for redo)
   initialState: null  // Initial state after loading image
@@ -126,7 +127,7 @@ export const editorSlice = createSlice({
     },
     // Update position with history tracking
     updatePositionWithHistory: (state, action) => {
-      const { previousPosition, newPosition } = action.payload;
+      const { newPosition } = action.payload;
       
       // First, save the previous position to history
       state.history.push(createStateSnapshot(state));
@@ -181,6 +182,9 @@ export const editorSlice = createSlice({
     },
     setCanvasSize: (state, action) => {
       state.canvasSize = action.payload;
+    },
+    setStencilShape: (state, action) => {
+      state.stencilShape = action.payload;
     }
   }
 });
@@ -191,6 +195,7 @@ export const {
   setPosition, 
   setStencilLoaded, 
   setCanvasSize,
+  setStencilShape,
   undoChange,
   redoChange,
   resetToInitial,
